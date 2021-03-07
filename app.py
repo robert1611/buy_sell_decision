@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from mortgage_calc import mortgage_calculation
-
 from flask_cors import CORS
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -21,9 +21,9 @@ class MortgageCalculation(Resource):
         zip_code = args['zip_code']
         credit_score = args['credit_score']
         has_been_bankrupt = args['has_been_bankrupt']
-        
+
         result = mortgage_calculation(zip_code, credit_score, has_been_bankrupt)
-        return result       
+        return result
 
 
 api.add_resource(MortgageCalculation, '/')

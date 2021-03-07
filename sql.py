@@ -1,14 +1,15 @@
-from sqlalchemy import create_engine  
+from sqlalchemy import create_engine
 from sqlalchemy import Column, String, Integer
-from sqlalchemy.ext.declarative import declarative_base  
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from os import environ
 
-db_string = "postgres+psycopg2://postgres:robert1972@localhost:5432/buy-rent"
+db_string = environ['POSTGRES_DB_URL']
 
-db = create_engine(db_string)  
+db = create_engine(db_string)
 base = declarative_base()
 
-class RentRef(base):  
+class RentRef(base):
     __tablename__ = 'rent_ref'
 
     id = Column(Integer, primary_key=True)
@@ -16,7 +17,7 @@ class RentRef(base):
     zip_code = Column(String)
     bedroom_number = Column(Integer)
 
-Session = sessionmaker(db)  
+Session = sessionmaker(db)
 session = Session()
 
 def get_rent_by_zip_code(zip_code, no_of_bedrooms):
