@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from os import environ
@@ -16,6 +16,31 @@ class RentRef(base):
     rent = Column(Integer)
     zip_code = Column(String)
     bedroom_number = Column(Integer)
+
+
+class User(base):
+  __tablename__ = 'user'
+
+  id = Column(Integer, primary_key=True)
+  email = Column(String)
+  display_name = Column(String)
+  google_id = Column(String)
+  facebook_id = Column(String)
+
+  UniqueConstraint('email', name='uix_email')
+
+  def is_active(self):
+    return True
+
+  def get_id(self):
+    return self.email
+
+  def is_authenticated(self):
+    return self.authenticated
+
+  def is_anonymous(self):
+    return False
+
 
 Session = sessionmaker(db)
 session = Session()
