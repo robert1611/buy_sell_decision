@@ -20,6 +20,8 @@ class RentRef(base):
 Session = sessionmaker(db)
 session = Session()
 
+base.metadata.create_all(db)
+
 def get_rent_by_zip_code(zip_code, no_of_bedrooms):
   rent_record = session.query(RentRef).filter(RentRef.zip_code==zip_code, RentRef.bedroom_number== no_of_bedrooms).first()
   print(rent_record)

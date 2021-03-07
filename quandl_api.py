@@ -1,5 +1,5 @@
 import quandl
-from os import quandl
+from os import environ
 
 API_KEY = environ['QUANDL_API_KEY']
 quandl.ApiConfig.api_key = API_KEY
