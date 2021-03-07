@@ -24,12 +24,12 @@ def mortgage_calculation(zip_code, credit_score, has_been_bankrupt):
     else:
       mortgage_percent = 0.06
 
-    mortgage_cost = mortgage_percent * house_purchase_value
-    transaction_cost = (0.00001 / 8) * house_purchase_value
+    mortgage_interest = mortgage_percent * house_purchase_value
+    amortized_transaction_cost = (0.1 / 8) * house_purchase_value  #this can be an input on the front-end, but can be a default value
     repairs_cost = 0.01 * house_purchase_value
     insurance_cost = .008 * house_purchase_value
-    property_tax = .02 * house_purchase_value
-    house_purchase_cost_per_month = (mortgage_cost + repairs_cost + insurance_cost + property_tax + transaction_cost) / 12
+    property_tax = .0182 * house_purchase_value
+    house_purchase_cost_per_month = (mortgage_interest + repairs_cost + insurance_cost + property_tax + amortized_transaction_cost) / 12
 
     option_result = 'RENT'
     if house_purchase_cost_per_month < house_rent_value_per_month:
@@ -43,8 +43,9 @@ def mortgage_calculation(zip_code, credit_score, has_been_bankrupt):
         'property_tax' : property_tax,
         'repairs_cost': repairs_cost,
         'insurance_cost' : insurance_cost,
-        'mortgage_cost': mortgage_cost,
+        'mortgage_interest': mortgage_interest,
         'house_purchase_cost_per_month': house_purchase_cost_per_month,
+        'amortized_transaction_cost' : amortized_transaction_cost,
         'house_rent_value_per_month': house_rent_value_per_month,
         'option_result': option_result
       }

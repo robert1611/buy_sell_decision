@@ -2,6 +2,8 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from mortgage_calc import mortgage_calculation
 
+from flask_cors import CORS
+
 app = Flask(__name__)
 api = Api(app)
 
