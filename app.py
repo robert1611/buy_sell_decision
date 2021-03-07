@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
@@ -63,7 +63,7 @@ class MortgageCalculation(Resource):
         has_been_bankrupt = args['has_been_bankrupt']
 
         result = mortgage_calculation(zip_code, credit_score, has_been_bankrupt)
-        return result
+        return jsonify(result)
 
 
 api.add_resource(MortgageCalculation, '/')
