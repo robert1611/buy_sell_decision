@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import Column, String, Integer, UniqueConstraint
+from sqlalchemy import Column, Float, String, Integer, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from os import environ
@@ -17,6 +17,24 @@ class RentRef(base):
     zip_code = Column(String)
     bedroom_number = Column(Integer)
 
+class DecisionMaker(base):
+    __tablename__ = 'decision_maker'
+
+    id = Column(Integer, primary_key=True)
+    house_purchase_value = Column(Float)
+    mortgage_percent = Column(Float)
+    property_tax = Column(Float)
+    repairs_cost = Column(Float)
+    insurance_cost = Column(Float)
+    mortgage_interest= Column(Float)
+    house_purchase_cost_per_month = Column(Float)
+    amortized_transaction_cost = Column(Float)
+    house_rent_value_per_month= Column(Float)
+    option_result = Column(String)
+    years_to_live = Column(Integer)
+    zip_code = Column(String)
+    credit_score = Column(String)
+    has_been_bankrupt = Column(Integer)
 
 class User(base):
   __tablename__ = 'user'

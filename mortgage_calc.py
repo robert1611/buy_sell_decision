@@ -1,11 +1,12 @@
 from quandl_api import get_home_value_by_zip_code
-from sql import get_rent_by_zip_code
+from sql import get_rent_by_zip_code, DecisionMaker, session
 
 
-def mortgage_calculation(zip_code, credit_score, has_been_bankrupt):
+def mortgage_calculation(zip_code, credit_score, has_been_bankrupt, years_to_live):
 
   credit_score = int(credit_score)
   has_been_bankrupt = int(has_been_bankrupt)
+  years_to_live = int(years_to_live)
 
   house_purchase_value = get_home_value_by_zip_code(zip_code,4)
   house_rent_value_per_month = get_rent_by_zip_code(zip_code,4) 
@@ -25,7 +26,7 @@ def mortgage_calculation(zip_code, credit_score, has_been_bankrupt):
       mortgage_percent = 0.06
 
     mortgage_interest = mortgage_percent * house_purchase_value
-    amortized_transaction_cost = (0.1 / 8) * house_purchase_value  #this can be an input on the front-end, but can be a default value
+    amortized_transaction_cost = (0.1 / years_to_live) * house_purchase_value  #this can be an input on the front-end, but can be a default value
     repairs_cost = 0.01 * house_purchase_value
     insurance_cost = .008 * house_purchase_value
     property_tax = .0182 * house_purchase_value
@@ -35,9 +36,7 @@ def mortgage_calculation(zip_code, credit_score, has_been_bankrupt):
     if house_purchase_cost_per_month < house_rent_value_per_month:
       option_result = 'BUY'
     
-    return {
-      'success': True,
-      'data': {
+    result = {
         'house_purchase_value': house_purchase_value,
         'mortgage_percent': mortgage_percent,
         'property_tax' : property_tax,
@@ -47,7 +46,20 @@ def mortgage_calculation(zip_code, credit_score, has_been_bankrupt):
         'house_purchase_cost_per_month': house_purchase_cost_per_month,
         'amortized_transaction_cost' : amortized_transaction_cost,
         'house_rent_value_per_month': house_rent_value_per_month,
-        'option_result': option_result
+        'option_result': option_result,
+        'credit_score' : credit_score,
+        'zip_code' : zip_code,
+        'years_to_live' : years_to_live,
+        'has_been_bankrupt' : has_been_bankrupt,
+
       }
+    decision_maker = DecisionMaker(**result)
+    session.add(decision_maker)
+    session.commit()
+
+    return {
+      'success': True,
+      'data': result 
+        
     }
     

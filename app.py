@@ -24,6 +24,7 @@ mortgage_parser = reqparse.RequestParser()
 mortgage_parser.add_argument('zip_code')
 mortgage_parser.add_argument('credit_score')
 mortgage_parser.add_argument('has_been_bankrupt')
+mortgage_parser.add_argument('years_to_live')
 
 auth_parser = reqparse.RequestParser()
 auth_parser.add_argument('email')
@@ -49,21 +50,24 @@ class AuthApi(Resource):
     expires = datetime.timedelta(days=7)
     access_token = create_access_token(identity=str(user.email), expires_delta=expires)
     return {'success': True, 'token': access_token}, 200
-
+    
 
 class MortgageCalculation(Resource):
     def get(self):
         return {'hello': 'world'}
 
-    @jwt_required
+    #@jwt_required
     def post(self):
         args = mortgage_parser.parse_args()
         zip_code = args['zip_code']
         credit_score = args['credit_score']
         has_been_bankrupt = args['has_been_bankrupt']
+        years_to_live = args['years_to_live']
 
-        result = mortgage_calculation(zip_code, credit_score, has_been_bankrupt)
+        result = mortgage_calculation(zip_code, credit_score, has_been_bankrupt, years_to_live)
+        print(result)
         return jsonify(result)
+        
 
 
 api.add_resource(MortgageCalculation, '/')
