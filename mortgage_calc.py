@@ -1,5 +1,5 @@
-from quandl_api import get_home_value_by_zip_code
-from sql import get_rent_by_zip_code, DecisionMaker, session
+#from quandl_api import get_home_value_by_zip_code
+from sql import get_rent_by_zip_code, DecisionMaker, session, get_value_by_zip_code
 
 
 def mortgage_calculation(zip_code, credit_score, has_been_bankrupt, years_to_live):
@@ -8,8 +8,8 @@ def mortgage_calculation(zip_code, credit_score, has_been_bankrupt, years_to_liv
   has_been_bankrupt = int(has_been_bankrupt)
   years_to_live = int(years_to_live)
 
-  house_purchase_value = get_home_value_by_zip_code(zip_code,4)
-  house_rent_value_per_month = get_rent_by_zip_code(zip_code,4) 
+  house_purchase_value = get_value_by_zip_code(zip_code)
+  house_rent_value_per_month = get_rent_by_zip_code(zip_code,2) 
 
   if has_been_bankrupt == 1 or credit_score < 500:
     return {
@@ -33,7 +33,7 @@ def mortgage_calculation(zip_code, credit_score, has_been_bankrupt, years_to_liv
     house_purchase_cost_per_month = (mortgage_interest + repairs_cost + insurance_cost + property_tax + amortized_transaction_cost) / 12
 
     option_result = 'RENT'
-    if house_purchase_cost_per_month < house_rent_value_per_month:
+    if house_purchase_cost_per_month < house_rent_value_per_month *1.1:
       option_result = 'BUY'
     
     result = {

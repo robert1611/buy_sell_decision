@@ -45,6 +45,19 @@ class User(base):
   google_id = Column(String)
   facebook_id = Column(String)
 
+class Housing(base):
+  __tablename__ = 'housing'
+
+  zip_code = Column(String, primary_key=True)
+  city_state = Column(String)
+  median_price = Column(Float)
+  median_price_sqft = Column(Float)
+  median_sqft = Column(Float)
+  total_listing_count = Column(Integer)
+
+
+
+
   UniqueConstraint('email', name='uix_email')
 
   def is_active(self):
@@ -69,3 +82,8 @@ def get_rent_by_zip_code(zip_code, no_of_bedrooms):
   rent_record = session.query(RentRef).filter(RentRef.zip_code==zip_code, RentRef.bedroom_number== no_of_bedrooms).first()
   print(rent_record)
   return rent_record.rent
+
+def get_value_by_zip_code(zip_code):
+  price_record = session.query(Housing.median_price).filter(Housing.zip_code==zip_code).first()
+  print(price_record)
+  return price_record[0]
