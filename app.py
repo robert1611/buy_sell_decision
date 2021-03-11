@@ -68,6 +68,9 @@ class MortgageCalculation(Resource):
         print(result)
         return jsonify(result)
         
+@app.route('/status', methods=['GET'])
+def home():
+    return "<h1>200</h1>"
 
 
 api.add_resource(MortgageCalculation, '/')
