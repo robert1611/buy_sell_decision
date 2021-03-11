@@ -9,13 +9,12 @@ db_string = environ['POSTGRES_DB_URL']
 db = create_engine(db_string)
 base = declarative_base()
 
-class RentRef(base):
-    __tablename__ = 'rent_ref'
+class RentRef_3(base):
+    __tablename__ = 'rent_ref_3'
 
     id = Column(Integer, primary_key=True)
     rent = Column(Integer)
     zip_code = Column(String)
-    bedroom_number = Column(Integer)
 
 class DecisionMaker(base):
     __tablename__ = 'decision_maker'
@@ -55,9 +54,6 @@ class Housing(base):
   median_sqft = Column(Float)
   total_listing_count = Column(Integer)
 
-
-
-
   UniqueConstraint('email', name='uix_email')
 
   def is_active(self):
@@ -72,16 +68,18 @@ class Housing(base):
   def is_anonymous(self):
     return False
 
-
 Session = sessionmaker(db)
 session = Session()
 
 base.metadata.create_all(db)
 
-def get_rent_by_zip_code(zip_code, no_of_bedrooms):
-  rent_record = session.query(RentRef).filter(RentRef.zip_code==zip_code, RentRef.bedroom_number== no_of_bedrooms).first()
+
+
+
+def get_rent_by_zip_code(zip_code):
+  rent_record = session.query(RentRef_3.rent).filter(RentRef_3.zip_code==zip_code).first()
   print(rent_record)
-  return rent_record.rent
+  return rent_record[0]
 
 def get_value_by_zip_code(zip_code):
   price_record = session.query(Housing.median_price).filter(Housing.zip_code==zip_code).first()
